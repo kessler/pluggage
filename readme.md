@@ -18,7 +18,9 @@ npm install --save pluggage
 
 ## Host/Load plugins in your code
 
-A plugin host manages discovery and lifecycle of plugins. It can also expose an api to them. To install a plugin simply `npm install your-plugin` in the host application.
+A plugin host manages discovery and lifecycle of plugins. It can also expose an api to them. To install a plugin simply `npm install your-plugin` in the host application. 
+
+Using `exact` or `prefix` in the `host(...)` options will make pluggage automatically load and initialize packages that were `npm` installed.
 
 ```js
 const pluggage = require('pluggage')
