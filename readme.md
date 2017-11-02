@@ -41,6 +41,7 @@ const hostApi = {
 
 // load all plugins who's package name starts with `generator-``
 let host = pluggage.host({ prefix: 'generator-', hostApi })
+
 // initialize the plugins
 host.init((err) => {})
 host.shutdown((err) => {})
