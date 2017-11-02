@@ -1,10 +1,8 @@
 # pluggage
 
-**Packages as plugins**
+**A very slim framework for building pluggable code.**
 
-A very slim framework for building pluggable code.
-
-`Pluggage` is a combination of `plugin` and `package`, but it also sounds a lot like `luggage`
+_`Pluggage` is a combination of `plugin` and `package`, but it also sounds a lot like `luggage`_
 
 
 [![npm status](http://img.shields.io/npm/v/pluggage.svg?style=flat-square)](https://www.npmjs.org/package/pluggage) [![Travis build status](https://img.shields.io/travis/kessler/pluggage.svg?style=flat-square&label=travis)](http://travis-ci.org/kessler/pluggage) [![Dependency status](https://img.shields.io/david/kessler/pluggage.svg?style=flat-square)](https://david-dm.org/kessler/pluggage)
@@ -45,6 +43,7 @@ const hostApi = {
 let host = pluggage.host({ prefix: 'generator-', hostApi })
 // initialize the plugins
 host.init((err) => {})
+host.shutdown((err) => {})
 
 // load the plugins who's package name exactly match the names specified in the array
 let exactHost = pluggage.host({ exact: ['plugin1', 'plugin2'], hostApi })
