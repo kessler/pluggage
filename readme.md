@@ -2,7 +2,7 @@
 
 **Packages as plugins**
 
-A low level package designed to ease the creation of pluggable code.
+A very slim framework for building pluggable code.
 
 `Pluggage` is a combination of `plugin` and `package`, but it also sounds a lot like `luggage`
 
