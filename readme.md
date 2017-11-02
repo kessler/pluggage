@@ -25,8 +25,8 @@ A plugin is just a package that exports the `pluggage` interface. The interface 
 const pluggage = require('pluggage')
 
 module.exports.pluggage = pluggage.plugin({
-   init:  (host, callback) => {},
-   shutdown: (host, callback) => {}
+   init:  (hostApi, callback) => {},
+   shutdown: (callback) => {}
 })
 ```
 
@@ -41,14 +41,13 @@ const hostApi = {
     foo: () => {}
 }
 
+// load all plugins who's package name starts with `generator-``
 let host = pluggage.host({ prefix: 'generator-', hostApi })
-host.init((err) => {
-    // load all plugins who's package name starts with `generator-``
-})
+// initialize the plugins
+host.init((err) => {})
 
-pluggage.host({ exact: ['plugin1', 'plugin2'], hostApi }, (err, pluginHost) => {
-    // load the plugins who's package name exactly match the names specified in the array
-})
+// load the plugins who's package name exactly match the names specified in the array
+let exactHost = pluggage.host({ exact: ['plugin1', 'plugin2'], hostApi })
 
 // TODO promise based API
 ```
