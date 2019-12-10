@@ -42,12 +42,12 @@ class Plugin {
 		return this._pluggageVersion
 	}
 
-	init(hostApi, callback) {
-		this._userPlugin.init(hostApi, callback)
+	init(hostApi) {
+		return this._userPlugin.init(hostApi)
 	}
 
-	shutdown(callback) {
-		this._userPlugin.shutdown(callback)
+	shutdown() {
+		return this._userPlugin.shutdown()
 	}
 }
 

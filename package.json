@@ -11,23 +11,18 @@
     "test": "mocha test.js"
   },
   "dependencies": {
-    "debug": "^3.1.0",
-    "pkg-dir": "^2.0.0",
-    "semver": "^5.4.1"
+    "debug": "^4.1.1",
+    "pkg-dir": "^4.2.0",
+    "semver": "^6.3.0"
   },
   "devDependencies": {
-    "chai": "^4.1.2",
-    "mocha": "^4.0.1"
+    "ava": "^2.4.0"
   },
   "keywords": [
     "module",
     "package",
     "plugin"
   ],
-  "engines": {
-    "node": ">=0.10.0",
-    "npm": ">=2.0.0"
-  },
   "repository": "kessler/pluggage",
   "bugs": "https://github.com/kessler/pluggage/issues",
   "homepage": "https://github.com/kessler/pluggage"

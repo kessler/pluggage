@@ -21,92 +21,67 @@ class PluginHost {
 		}
 	}
 
-	init(callback) {
-		this._verifyOpState('init')
-		this._opStateOngoing('init')
-
-		let plugins = Array.from(this._plugins)
-
-		let executeOne = () => {
-			if (plugins.length === 0) {
-				this._opStateComplete('init')
-				debug(`init done`)
-				return callback()
-			}
-
-			let plugin = plugins.pop()
-			debug(`execute plugin init`)
-
-			plugin.init(this._hostApi, (err) => {
-				if (err) {
-					this._opStateFailed('init')
-					debug(`plugin init error`, err)
-					return callback(err)
-				}
-
-				executeOne()
-			})
-		}
-
-		executeOne()
+	async init() {
+		await this._runCommandOnAllPlugins('init')
 	}
 
-	shutdown(callback) {
-		this._verifyOpState('shutdown')
-		this._opStateOngoing('shutdown')
+	async shutdown() {
+		await this._runCommandOnAllPlugins('shutdown')
+	}
+
+	async _runCommandOnAllPlugins(cmd) {
+		this._verifyOpState(cmd)
+		this._opStateOngoing(cmd)
 
 		let plugins = Array.from(this._plugins)
 
-		let executeOne = () => {
-			if (plugins.length === 0) {
-				this._opStateComplete('shutdown')
-				debug(`shutdown done`)
-				return callback()
-			}
-
-			let plugin = plugins.pop()
-			debug(`execute plugin shutdown`)
-
-			plugin.shutdown((err) => {
-				if (err) {
-					this._opStateFailed('shutdown')
-					debug(`plugin shutdown error`, err)
-					return callback(err)
-				}
-
-				executeOne()
-			})
+		for (let plugin of plugins) {
+			await this._runPluginCommand(plugin, cmd)
 		}
 
-		executeOne()
+		this._opStateComplete(cmd)
+		debug(`${cmd} done`)
+	}
+
+	async _runPluginCommand(plugin, cmd) {
+		debug(`execute plugin ${cmd}`)
+		try {
+			await plugin[cmd](this._hostApi)
+		} catch (e) {
+			this._opStateFailed(cmd, e)
+			debug(`plugin ${plugin.name} ${cmd} error`, e)
+			const wrapped = new Error(`failed to run "${cmd}" on plugin "${plugin.name}", due to "${e}" error, you can access a reference to the original thrown error using the "sourceError" property on this error instance`)
+			wrapped.sourceError = e
+			throw wrapped
+		}
 	}
 
 	_verifyOpState(op) {
-		let opState = this[`_${op}`]
+		const opState = this[`_${op}`]
 
 		if (opState.done) {
 			throw new Error(`${op}() already executed`)
 		}
 
 		if (opState.ongoing) {
-			throw new Error(`${op}() already in progress`)
+			throw new Error(`${op}() in progress`)
 		}
 	}
 
 	_opStateComplete(op) {
-		let opState = this[`_${op}`]
-
+		const opState = this[`_${op}`]
 		opState.done = true
 		opState.ongoing = false
 	}
 
 	_opStateFailed(op) {
-		let opState = this[`_${op}`]
+		const opState = this[`_${op}`]
 		opState.ongoing = false
+		opState
 	}
 
 	_opStateOngoing(op) {
-		let opState = this[`_${op}`]
+		const opState = this[`_${op}`]
 		opState.ongoing = true
 	}
 
@@ -169,7 +144,7 @@ class PluginHost {
 module.exports = PluginHost
 
 function findByPrefix(prefix, deps) {
-	let result = []
+	const result = []
 	for (let packageName in deps) {
 		if (packageName.startsWith(prefix)) {
 			result.push(packageName)
@@ -180,9 +155,9 @@ function findByPrefix(prefix, deps) {
 }
 
 function loadPlugins(requireFunctor, version, packages) {
-	let plugins = []
+	const plugins = []
 	for (let packageName of packages) {
-		let packageModule = requireFunctor(packageName)
+		const packageModule = requireFunctor(packageName)
 
 		if (!(packageModule.pluggage)) {
 			debug(`package ${packageName} does not exports a pluggage plugin`)
@@ -194,7 +169,7 @@ function loadPlugins(requireFunctor, version, packages) {
 			continue
 		}
 
-		let plugin = packageModule.pluggage
+		const plugin = packageModule.pluggage
 		plugin.name = packageName
 
 		if (semver.diff(plugin.version, version) === 'major') {
