@@ -6,19 +6,19 @@ const Plugin = require('./Plugin')
 test('plugin factory method throws an error if plugin implementation is missing', t => {
 	t.throws(() => {
 		pluggage.plugin()
-	}, 'missing plugin implementation')
+	}, { instanceOf: TypeError , message: 'missing plugin implementation'})
 })
 
 test('plugin factory method throws an error if init function is missing', t => {
 	t.throws(() => {
 		pluggage.plugin({})
-	}, 'missing init() method in plugin implementation')
+	}, { instanceOf: TypeError , message:  'missing init() method in plugin implementation'})
 })
 
 test('plugin factory method throws an error if shutdown function is missing', t => {
 	t.throws(() => {
 		pluggage.plugin({ init: () => {} })
-	}, 'missing shutdown() method in plugin implementation')
+	}, { instanceOf: TypeError , message:  'missing shutdown() method in plugin implementation'})
 })
 
 test('a plugin is created with version info', t => {
@@ -35,7 +35,7 @@ test('factory method creates a plugin host', t => {
 test('plugin host factory method throws an error if neither "prefix" nor "exact" properties are provided', t => {
 	t.throws(() => {
 		pluggage.host({})
-	}, 'specifying a package prefix or exact package names is required')
+	}, { instanceOf: Error , message:  'specifying a package prefix or exact package names is required'})
 })
 
 test('plugin host factory method throws an error if plugin version is not compatible with host version (major)', t => {
@@ -43,7 +43,7 @@ test('plugin host factory method throws an error if plugin version is not compat
 		const { opts } = t.context
 		opts.pluggageVersion = '2.3.3'
 		pluggage.host(opts)
-	}, 'package foo is incompatible with this plugin host')
+	}, { instanceOf: TypeError , message:  'package foo is incompatible with this plugin host'})
 })
 
 test('a plugin host does not include packages that dont export a pluggage property', t => {
@@ -107,7 +107,7 @@ test('plugin host cannot be initialized twice', async t => {
 
 	await t.throwsAsync(async () => {
 		await host.init()
-	}, 'init() already executed')
+	}, { instanceOf: Error , message: 'init() already executed'})
 })
 
 test('plugin host cannot be initialized twice concurrently', async t => {
@@ -116,7 +116,7 @@ test('plugin host cannot be initialized twice concurrently', async t => {
 
 	await t.throwsAsync(async () => {
 		await Promise.all(work)
-	}, 'init() in progress')
+	}, { instanceOf: Error , message:  'init() in progress'})
 })
 
 test('plugin host sends a shutdown signal to plugins', async t => {
@@ -132,7 +132,7 @@ test('plugin host cannot perform shutdown twice', async t => {
 	await host.shutdown()
 	await t.throwsAsync(async () => {
 		await host.shutdown()
-	}, 'shutdown() already executed')
+	}, { instanceOf: Error , message: 'shutdown() already executed'})
 })
 
 test('plugin host cannot perform shutdown twice concurrently', async t => {
@@ -141,7 +141,7 @@ test('plugin host cannot perform shutdown twice concurrently', async t => {
 
 	await t.throwsAsync(async () => {
 		await Promise.all(work)
-	}, 'shutdown() in progress')
+	}, { instanceOf: Error , message: 'shutdown() in progress'})
 })
 
 class MockHostApi {

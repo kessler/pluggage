@@ -13,10 +13,10 @@
   "dependencies": {
     "debug": "^4.1.1",
     "pkg-dir": "^4.2.0",
-    "semver": "^6.3.0"
+    "semver": "^7.3.2"
   },
   "devDependencies": {
-    "ava": "^2.4.0"
+    "ava": "^3.8.2"
   },
   "keywords": [
     "module",
