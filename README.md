@@ -58,6 +58,25 @@ module.exports.pluggage = pluggage.plugin({
 })
 ```
 
+#### IMPORTANT: Installing the package in a plugin module
+Doing `npm i pluggage` for this scenario is not a good idea. It will cause the host and the plugin to have different instances of what's suppose to be the same class. You're welcome to read more about this kind of problem [here](https://nodejs.org/en/blog/npm/peer-dependencies/#the-problem-plugins).
+
+When developing the pluing module separately (ie not as a local package - [discussed here](LOCAL-CODE-PACKAGE.md)) you should have it as both `dev` and `peer` depedency:
+```
+{
+    "peerDependencies": {
+        "pluggage": "1.x"
+    },
+    "devDependencies": {
+        "pluggage"
+    }
+}
+```
+
+local packages do not need the _devDepenendencies_.
+
+This is a little awkward, and maybe there's a better solution... please share it if you have one.
+
 ## license
 
 [MIT](http://opensource.org/licenses/MIT) © Yaniv Kessler
