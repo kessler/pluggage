@@ -45,7 +45,7 @@ main()
 
 ```
 
-## Write a plugin
+## Creating a plugin
 
 A plugin is just a package that exports the `pluggage` interface (using the `pluggage` property). 
 
@@ -62,13 +62,13 @@ module.exports.pluggage = pluggage.plugin({
 Doing `npm i pluggage` for this scenario is not a good idea. It will cause the host and the plugin to have different instances of what's suppose to be the same class. You're welcome to read more about this kind of problem [here](https://nodejs.org/en/blog/npm/peer-dependencies/#the-problem-plugins).
 
 When developing the pluing module separately (ie not as a local package - [discussed here](LOCAL-CODE-PACKAGE.md)) you should have it as both `dev` and `peer` depedency:
-```
+```json
 {
     "peerDependencies": {
         "pluggage": "1.x"
     },
     "devDependencies": {
-        "pluggage"
+        "pluggage": "x.y.z"
     }
 }
 ```
