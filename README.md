@@ -1,6 +1,6 @@
 # pluggage
 
-[![npm status](http://img.shields.io/npm/v/pluggage.svg?style=flat-square)](https://www.npmjs.org/package/pluggage) [![Travis build status](https://img.shields.io/travis/kessler/pluggage.svg?style=flat-square&label=travis)](http://travis-ci.org/kessler/pluggage) [![Dependency status](https://img.shields.io/david/kessler/pluggage.svg?style=flat-square)](https://david-dm.org/kessler/pluggage)
+[![npm status](http://img.shields.io/npm/v/pluggage.svg?style=flat-square)](https://www.npmjs.org/package/pluggage)
 
 **A very slim framework for building pluggable code.**
 
