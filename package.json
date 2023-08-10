@@ -16,7 +16,7 @@
     "semver": "^7.3.2"
   },
   "devDependencies": {
-    "ava": "^3.10.1"
+    "ava": "^5.3.1"
   },
   "keywords": [
     "module",
